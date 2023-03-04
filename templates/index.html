@@ -1,0 +1,51 @@
+<!-- Шаблон, который вставляет кусочек кода для странички, которая отображает все работы, которые хранятся в БД -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Стандартные метаданные. Выбираем кодировку символов. -->
+<meta charset="UTF-8">
+<!-- Заголовок шаблона, выравненный по центру -->
+<h2 align="center">Works log</h2>
+
+<!-- Цикл, который перебирает все работы, хранящиеся в переменной jobs -->
+{% for job in jobs %}
+<h3> Action # {{ job.id }}</h3>
+<!-- Контейнер, коробка, в которой будет лежать табличка, с описанием работы. -->
+<!-- Нужен для задания оформления таблице. Это происходит через class -->
+<div class="table_container">
+    <!-- Непосредственно таблица -->
+    <table class="my_table">
+        <!-- Строчка, в которой хранятся заголовки таблицы. Поэтому класс у них - title. -->
+        <!-- Каждый td - отдельная ячейка в самой первой строчке. -->
+        <tr class="my_row">
+            <td class="title" width="500px" bgcolor="#ddddd"> Title of activity</td>
+            <td class="title" width="300px" bgcolor="#ddddd"> Team leader</td>
+            <td class="title" width="300px" bgcolor="#ddddd"> Duration</td>
+            <td class="title" width="350px" bgcolor="#ddddd"> List of collaborators</td>
+            <td class="title" width="100px" bgcolor="#ddddd"> Is finished</td>
+        </tr>
+        <!-- Строчка, в которой отображается вся информация о работе job (это все еще цикл). -->
+        <!-- Каждый td - отдельная ячейка в самой первой строчке. -->
+        <tr class="my_row">
+            <!-- Ячейка, которая содержит описание работы. -->
+            <td class="ordinary" bgcolor="#ccccc"> {{ job.job.capitalize() }}</td>
+            <!-- Ячейка с именем и фамилией тимлида. Взято из словаря names. -->
+            <td class="ordinary" bgcolor="#ccccc"> {{ names[job.team_leader][0] }} {{ names[job.team_leader][1] }} </td>
+            <!-- Длительность работы. -->
+            <td class="ordinary" bgcolor="#ccccc"> {{ job.work_size }} hours</td>
+            <!-- Исполнители работы. Id тех людей, которые ее делают. -->
+            <td class="ordinary" bgcolor="#ccccc"> {{ job.collaborators}}</td>
+            <!-- Ветвление. Чтобы в зависимости от того, завершена работа или нет, выкрашивать разным цветом ячейку -->
+            {% if job.is_finished %}
+                <td class="ordinary" bgcolor="#eeffee">Finished</td>
+            {% else %}
+                <td class="ordinary" bgcolor="#ffeeff">Is not finished</td>
+            {% endif %}
+        </tr>
+    </table>
+</div>
+<br>
+{% endfor %}
+
+{% endblock %}
