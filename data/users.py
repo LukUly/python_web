@@ -2,15 +2,16 @@ import datetime
 import sqlalchemy
 from flask_login import UserMixin
 from sqlalchemy import orm
-
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy_serializer import SerializerMixin
+
 from .db_session import SqlAlchemyBase
 
 
 # Модель Марсиане
 # Мы наследуемся от нашей абстрактной БД, которую мы создавали в файле db_session
 # это нужно, чтобы табличка создалась именно в той базе
-class User(SqlAlchemyBase, UserMixin):
+class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     # Название бд. По умолчанию, если не указать этот параметр, назовет так же, как называется класс
     __tablename__ = 'users'
 

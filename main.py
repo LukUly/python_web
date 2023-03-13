@@ -1,6 +1,12 @@
-from flask import Flask, render_template, redirect
-from flask_login import LoginManager, login_user, login_required, logout_user
+import sys
 
+import requests
+from flask import Flask, render_template, redirect, make_response, jsonify, request
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_restful import abort
+from requests import get
+
+from data import jobs_api, users_api
 from data.db_session import global_init, create_session
 from data.register import RegisterForm
 from data.add_job import AddJobForm
@@ -10,7 +16,6 @@ from data.jobs import Jobs
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
-
 login_manager = LoginManager()
 login_manager.init_app(app)
 
@@ -108,6 +113,8 @@ def index():
 
 def main():
     global_init("db/mars_explorer.db")
+    app.register_blueprint(jobs_api.blueprint)
+    app.register_blueprint(users_api.blueprint)
     app.run(port=8080, host='127.0.0.1')
 
 

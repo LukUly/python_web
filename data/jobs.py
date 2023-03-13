@@ -1,13 +1,16 @@
 import datetime
 import sqlalchemy
 from sqlalchemy import orm
+from flask_login import UserMixin
+from sqlalchemy_serializer import SerializerMixin
+
 
 from .db_session import SqlAlchemyBase
 
 # Модель Работы
 # Мы наследуемся от нашей абстрактной БД, которую мы создавали в файле db_session
 # это нужно, чтобы табличка создалась именно в той базе
-class Jobs(SqlAlchemyBase):
+class Jobs(SqlAlchemyBase, UserMixin, SerializerMixin):
     # Название бд. По умолчанию, если не указать этот параметр, назовет так же, как называется класс
     __tablename__ = 'jobs'
 
@@ -18,7 +21,7 @@ class Jobs(SqlAlchemyBase):
     collaborators = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     start_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
     end_date = sqlalchemy.Column(sqlalchemy.DateTime, default=datetime.datetime.now)
-    is_finished = sqlalchemy.Column(sqlalchemy.Boolean, default=True)
+    is_finished = sqlalchemy.Column(sqlalchemy.Boolean, default=False)
 
     # здесь мы показываем, что таблица users связана с таблицей jobs через столбцы id - team_lead
     # по факту, это означает, что тимлид тоже является пользователем
